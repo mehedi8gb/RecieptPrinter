@@ -10,8 +10,6 @@ import javax.print.*;
 import java.io.ByteArrayOutputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Locale;
 
 public class ReceiptPrinter {
@@ -208,34 +206,41 @@ public class ReceiptPrinter {
                 return;
             }
 
-            String printerName = "RONGTA 80mm Series Printer";
+            String printerName = parts[0];
             String html;
 
 
-            if (!parts[1].isEmpty()) {
+            if (parts[1].isEmpty()) {
                 html = parts[1];
             } else {
                 // Fallback demo
                 html = """
-                        <center><h1>*** RECEIPT ***</h1></center>
-                        <br>
                         <pre>
-                           Shop Name        : Apex Deli
-                           Date             : 2025-05-15
-                           Order ID         : #12345
-                        ------------------------------------------
-                           Item             Qty   Price   Total
-                        ------------------------------------------
-                           Burger           1     10.00   10.00
-                           Fries            2      5.00   10.00
-                           Coke             1      3.00    3.00
-                        ------------------------------------------
-                           Subtotal                       23.00
-                           Tax (5%)                        1.15
-                        ------------------------------------------
-                           <b>Total                       24.15</b>
-                        ------------------------------------------
-                                 Thank you for your order!
+                                      KRYSTALMART
+                                      Main Branch
+                                         abc
+                                   Tel: (555) 123-4567
+                        --------------------------------------------
+                        Invoice:          20250514-0001
+                        Sale ID:          43
+                        Date:             May 14, 2025, 12:00 AM
+                        Payment:          cash
+                        ----------------------------------------
+                        Customer Details: Guest Customer
+                        ----------------------------------------
+                        Qty  Item                       Price
+                        1    Product 2                 ৳700.00
+                        1    Barrett Small             ৳1,000.00
+                        ----------------------------------------
+                        Subtotal:                      ৳1,700.00
+                        ----------------------------------------
+                        TOTAL:                         ৳1,700.00
+                        ----------------------------------------
+                        Note:     Sale processed via POS system.
+                        ----------------------------------------
+                             Thank you for your purchase!
+                                 Tax ID: TAX-12345678
+                                       5/16/2025
                         </pre>
                         """;
             }
@@ -244,7 +249,7 @@ public class ReceiptPrinter {
             Logger.logInfo("Parsed Printer Name: " + printerName);
             Logger.logInfo("HTML Content Length: " + html.length());
             System.out.println(html); // stdout or use your transport method
-        printReceiptFromHtmlString(html, printerName);
+            printReceiptFromHtmlString(html, printerName);
         } catch (Exception e) {
             Logger.logException("Exception in main()", e);
         }
