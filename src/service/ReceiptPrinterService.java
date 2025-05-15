@@ -5,15 +5,21 @@ import java.io.*;
 
 public class ReceiptPrinterService {
 
+    // ESC/POS cut command: 1D 56 41 00
+    private static final byte[] CUT_COMMAND = new byte[]{0x1D, 0x56, 0x41, 0x00};
+
     public static void print(String receiptContent) throws IOException, PrintException {
-        // Save to temp file
+        // Save receipt content to temp file
         File tempFile = File.createTempFile("receipt", ".txt");
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+        try (FileOutputStream fos = new FileOutputStream(tempFile);
+             OutputStreamWriter writer = new OutputStreamWriter(fos)) {
+
             writer.write(receiptContent);
             writer.flush();
+            fos.write(CUT_COMMAND); // Append cut command
         }
 
-        // Print job
+        // Send to printer
         DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
         PrintService service = PrintServiceLookup.lookupDefaultPrintService();
         DocPrintJob job = service.createPrintJob();
@@ -23,8 +29,9 @@ public class ReceiptPrinterService {
             job.print(doc, null);
         }
 
-        // Delete temp file (optional)
+        // Cleanup
         tempFile.delete();
     }
 }
+
 

@@ -1,0 +1,20 @@
+{{shopName}}
+{{shopAddress}}
+{{shopPhone}}
+------------------------------------------------
+Date:     {{date}}  Time: {{time}}
+Invoice:  {{invoiceId}}
+Cashier:  {{cashierName}}
+------------------------------------------------
+{{items}}
+------------------------------------------------
+Subtotal:                          {{subtotal}}
+Discount:                          {{discount}}
+Tax:                               {{tax}}
+Total:                             {{total}}
+Paid:                              {{paid}}
+Change:                            {{change}}
+------------------------------------------------
+
+          THANK YOU FOR YOUR PURCHASE!
+              Please come again!

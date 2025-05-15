@@ -5,12 +5,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import src.printer.PrintServiceManager;
+import src.service.ReceiptPrinterService;
 
 import javax.print.*;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -20,11 +18,11 @@ import java.nio.file.Paths;
 
 public class ReceiptPrinter {
     private final TemplateResolver resolver;
-    private final PrintServiceManager printer;
+    private final ReceiptPrinterService printer;
 
     public ReceiptPrinter() {
         this.resolver = new TemplateResolver();
-        this.printer = new PrintServiceManager();
+        this.printer = new ReceiptPrinterService();
     }
 
 
@@ -35,7 +33,7 @@ public class ReceiptPrinter {
 
 
             String filled = resolver.resolve(html, TemplateData.getSampleData());
-            printer.printHtml(filled);
+//            printer.printHtml(filled);
         } catch (IOException e) {
             System.err.println("Failed to print receipt: " + e.getMessage());
         }

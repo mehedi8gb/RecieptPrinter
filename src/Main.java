@@ -6,10 +6,18 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import src.core.*;
+import src.model.Item;
+import src.model.Receipt;
+import src.service.ReceiptRenderer;
+import src.service.ReceiptTemplateLoader;
+import src.service.ReceiptPrinterService;
 
 import javax.print.*;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Locale;
 
 public class Main {
@@ -190,7 +198,28 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        ReceiptPrinter printer = new ReceiptPrinter();
-        printer.printReceipt("receipt_template.html");
+        Receipt receipt = new Receipt();
+        receipt.setShopName("KRYSTALMART");
+        receipt.setShopAddress("Main Branch");
+        receipt.setShopPhone("+880123456789");
+        receipt.setInvoiceId("20250514-0001");
+        receipt.setCashierName("Rafi");
+        receipt.setDate(LocalDate.now().toString());
+        receipt.setTime(LocalTime.now().toString());
+        receipt.setSubtotal(10000.00);
+        receipt.setDiscount(400.00);
+        receipt.setTax(500.00);
+        receipt.setTotal(10000.00);
+        receipt.setPaid(10000.00);
+        receipt.setChange(1500.00);
+        receipt.setItems(List.of(
+                new Item(10000.00, 2, "Barrett Small")
+        ));
+
+        // 3. Render receipt
+        String content = ReceiptRenderer.render(receipt);
+
+        // 4. Print
+        ReceiptPrinterService.print(content);
     }
 }
