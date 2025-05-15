@@ -117,23 +117,23 @@ public class ReceiptPrinter {
     public static void main(String[] args) throws Exception {
 
         String sampleHtml = """
-                <center><b>*** RECEIPT ***</b></center><br>
+                <center><h1>*** RECEIPT ***</h1></center>
                 <pre>
-                    Shop Name                   : Apex Deli
-                    Date                        : 2025-05-15
-                    Order ID                    : #12345
-                -------------------------------------------------
-                    Item                  Qty   Price   Total
-                -------------------------------------------------
-                    Burger                1     10.00   10.00
-                    Fries                 2      5.00   10.00
-                    Coke                  1      3.00    3.00
-                -------------------------------------------------
-                    Subtotal                            23.00
-                    Tax (5%)                             1.15
-                -------------------------------------------------
-                    <b>Total                            24.15</b>
-                -------------------------------------------------
+                    Shop Name                  : Apex Deli
+                    Date                       : 2025-05-15
+                    Order ID                   : #12345
+                ------------------------------------------------
+                    Item                 Qty   Price   Total
+                ------------------------------------------------
+                    Burger               1     10.00   10.00
+                    Fries                2      5.00   10.00
+                    Coke                 1      3.00    3.00
+                ------------------------------------------------
+                    Subtotal                           23.00
+                    Tax (5%)                            1.15
+                ------------------------------------------------
+                    <b>Total                           24.15</b>
+                ------------------------------------------------
                 
                     <center>Thank you for your order!</center>
                     </pre>
