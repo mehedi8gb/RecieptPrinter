@@ -1,18 +1,46 @@
-package src;
+package src.core;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+import src.printer.PrintServiceManager;
 
 import javax.print.*;
 import java.io.ByteArrayOutputStream;
-import java.net.URLDecoder;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Locale;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ReceiptPrinter {
+    private final TemplateResolver resolver;
+    private final PrintServiceManager printer;
+
+    public ReceiptPrinter() {
+        this.resolver = new TemplateResolver();
+        this.printer = new PrintServiceManager();
+    }
+
+
+    public void printReceipt(String templatePath) {
+        try {
+            Path Path = Paths.get("src", "templates", templatePath);
+            String html = Files.readString(Path);
+
+
+            String filled = resolver.resolve(html, TemplateData.getSampleData());
+            printer.printHtml(filled);
+        } catch (IOException e) {
+            System.err.println("Failed to print receipt: " + e.getMessage());
+        }
+    }
+
 
     public static void printRawBytes(byte[] data, String printerName) throws Exception {
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
@@ -189,69 +217,19 @@ public class ReceiptPrinter {
         printRawBytes(escposData, printerName);
     }
 
-    public static void main(String[] args) throws Exception {
-        Logger.logInfo("=== Application started ===");
-        try {
-            if (args.length < 1) {
-                System.out.println("Missing required input.");
-                return;
-            }
-
-            String raw = URLDecoder.decode(args[0], StandardCharsets.UTF_8);
-
-            // Split using a custom delimiter (like |)
-            String[] parts = raw.split("\\|", 2);
-            if (parts.length < 2) {
-                System.out.println("Invalid input format. Expected 'printer|html'");
-                return;
-            }
-
-            String printerName = parts[0];
-            String html;
-
-
-            if (parts[1].isEmpty()) {
-                html = parts[1];
-            } else {
-                // Fallback demo
-                html = """
-                        <pre>
-                                      KRYSTALMART
-                                      Main Branch
-                                         abc
-                                   Tel: (555) 123-4567
-                        --------------------------------------------
-                        Invoice:          20250514-0001
-                        Sale ID:          43
-                        Date:             May 14, 2025, 12:00 AM
-                        Payment:          cash
-                        ----------------------------------------
-                        Customer Details: Guest Customer
-                        ----------------------------------------
-                        Qty  Item                       Price
-                        1    Product 2                 ৳700.00
-                        1    Barrett Small             ৳1,000.00
-                        ----------------------------------------
-                        Subtotal:                      ৳1,700.00
-                        ----------------------------------------
-                        TOTAL:                         ৳1,700.00
-                        ----------------------------------------
-                        Note:     Sale processed via POS system.
-                        ----------------------------------------
-                             Thank you for your purchase!
-                                 Tax ID: TAX-12345678
-                                       5/16/2025
-                        </pre>
-                        """;
-            }
-
-
-            Logger.logInfo("Parsed Printer Name: " + printerName);
-            Logger.logInfo("HTML Content Length: " + html.length());
-            System.out.println(html); // stdout or use your transport method
-            printReceiptFromHtmlString(html, printerName);
-        } catch (Exception e) {
-            Logger.logException("Exception in main()", e);
-        }
-    }
+//    public static void main(String[] args) throws Exception {
+//        if (args.length == 0) throw new RuntimeException("No arguments provided");
+//
+//        String json = URLDecoder.decode(args[0], StandardCharsets.UTF_8);
+//        PrintJobRequest request = new Gson().fromJson(json, PrintJobRequest.class);
+//
+//        TemplateData renderer = new HtmlTemplateData();
+//        EscPosEncoder encoder = new EscPosEncoder();
+//        PrinterService printer = new PrinterService();
+//
+//        TemplateResolver engine = new TemplateResolver(renderer, encoder);
+//
+//        byte[] data = engine.renderAndEncode(request.getReceipt());
+//        printer.print(data, request.getPrinter());
+//    }
 }
