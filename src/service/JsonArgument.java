@@ -4,26 +4,51 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-
-import static src.util.Logger.log;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 public class JsonArgument {
 
-   public static JsonNode parse(String escapedJson) {
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    /**
+     * Cleans CLI or web-passed JSON string by decoding and unescaping.
+     */
+    public static String cleanCLIJson(String rawInput) {
         try {
-            // 1. Unescape the JSON string
-            String rawJson = escapedJson.replace("\\\"", "\"");
-            log("\nUnescaped JSON: " + rawJson);
 
-            // 2. Parse the raw JSON string
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readTree(rawJson);
+            String prefix = "printtoreceiptprinter:";
+            if (rawInput.startsWith(prefix)) {
+                rawInput = rawInput.substring(prefix.length());
+            }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            // STEP 2: URL-decode
+            String urlDecoded = URLDecoder.decode(rawInput, StandardCharsets.UTF_8);
+
+            // STEP 3: Unwrap double quotes if the string is wrapped (PowerShell/CMD)
+            if ((urlDecoded.startsWith("\"") && urlDecoded.endsWith("\"")) ||
+                    (urlDecoded.startsWith("'") && urlDecoded.endsWith("'"))) {
+                urlDecoded = urlDecoded.substring(1, urlDecoded.length() - 1);
+            }
+
+            // STEP 4: Replace escape sequences like \" with "
+
+            return urlDecoded.replace("\\\"", "\"");
+        } catch (Exception e) {
+            System.err.println("⚠️ Failed to clean CLI JSON: " + e.getMessage());
+            return rawInput;
         }
     }
 
-
+    /**
+     * Parses cleaned JSON into Jackson JsonNode.
+     */
+    public static JsonNode parse(String json) {
+        try {
+            return mapper.readTree(json);
+        } catch (IOException e) {
+            System.err.println("❌ Failed to parse JSON: " + e.getMessage());
+            return null;
+        }
+    }
 }

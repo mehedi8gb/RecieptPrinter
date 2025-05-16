@@ -2,14 +2,11 @@ package src.service;
 
 import src.model.Item;
 import src.model.Receipt;
-import static src.util.AppUtils.*;
 
 public class ReceiptRenderer {
     private static final int LINE_WIDTH = 50;
-    private static final String LEFT_MARGIN = "  "; // 2 spaces margin to center the 43-char block
+    private static final String LEFT_MARGIN = "   "; // 2 spaces margin to center the 43-char block
     public static final int LABEL_WIDTH = 22;
-    public static final int PRICE_WIDTH = 10;
-    private static final int ITEM_NAME_WIDTH = 14;   // 16 total with spaces
 
     private static String truncate(String value, int length) {
         if (value.length() <= length) return value;
@@ -125,37 +122,6 @@ public class ReceiptRenderer {
         sb.append("\n".repeat(3));
 
         return sb.toString();
-    }
-
-    // Utility: Extract HH:mm:ss from full time string
-    private static String formatTimeHMS(String timeRaw) {
-        // Expected format example: "03:45:54.185776700"
-        // Return only "03:45:54"
-        if (timeRaw == null || timeRaw.length() < 8) return timeRaw;
-        return timeRaw.substring(0, 8);
-    }
-
-    private static String formatLineWithSymbol(String label, double amount, String symbol) {
-        String line;
-        int totalWidth = 41; // 1 + 39 + 1 for border (|...|)
-
-        // Left part: label with symbol
-        String labelWithSymbol = label;
-        if (symbol != null && !symbol.isEmpty()) {
-            labelWithSymbol += " (" + symbol + ")";
-        }
-
-        // Adjust for amount formatting
-        String amountStr = String.format("%.2f", amount);
-
-        int labelMaxWidth = totalWidth - amountStr.length() - 5; // space and border safety
-        if (labelWithSymbol.length() > labelMaxWidth) {
-            labelWithSymbol = truncate(labelWithSymbol, labelMaxWidth);
-        }
-
-        line = String.format("| %-"+labelMaxWidth+"s %"+(totalWidth-labelMaxWidth-3)+"s |\n", labelWithSymbol, amountStr);
-
-        return line;
     }
 
     private static String formatLineWithRateMiddle(String label, double amount, String rateSymbol) {

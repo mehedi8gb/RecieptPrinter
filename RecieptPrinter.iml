@@ -7,8 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jsoup-1.20.1" level="project" />
-    <orderEntry type="library" name="pdfbox-app-3.0.5" level="project" />
-    <orderEntry type="library" name="fasterxml.jackson.core.databind" level="project" />
+    <orderEntry type="library" exported="" name="jsoup-1.20.1" level="project" />
+    <orderEntry type="library" exported="" name="pdfbox-app-3.0.5" level="project" />
+    <orderEntry type="library" exported="" name="fasterxml.jackson.core.databind" level="project" />
   </component>
 </module>
