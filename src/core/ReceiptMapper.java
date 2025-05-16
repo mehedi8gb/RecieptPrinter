@@ -17,7 +17,7 @@ public class ReceiptMapper {
         receipt.setDate(dto.getDate() != null ? dto.getDate() : LocalDate.now().toString());
         receipt.setTime(dto.getTime() != null ? dto.getTime() : LocalTime.now().toString());
         receipt.setSubtotal(dto.getSubtotal());
-        receipt.setDiscount(dto.getDiscount());
+        receipt.setDiscountRate(dto.getDiscountRate());
         receipt.setTax(dto.getTax());
         receipt.setTotal(dto.getTotal());
         receipt.setPaid(dto.getPaid());

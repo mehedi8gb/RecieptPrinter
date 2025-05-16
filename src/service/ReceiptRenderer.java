@@ -49,32 +49,52 @@ public class ReceiptRenderer {
 
 // Header
         sb.append(LEFT_MARGIN).append("+----------------+-----+--------+---------+\n");
-        sb.append(LEFT_MARGIN).append("| Item           | Qty |  Price |  Total  |\n");
+        sb.append(LEFT_MARGIN).append("| Item           | Qty | Price |   Total  |\n");
         sb.append(LEFT_MARGIN).append("+----------------+-----+--------+---------+\n");
 
 // Rows
         for (Item item : receipt.getItems()) {
-            String name = truncate(item.getName(), 16); // max 16 chars
-            int qty = item.getQuantity();              // max 3 digits
-            double price = item.getUnitPrice();        // up to 9999.99
-            double total = item.getTotalPrice();       // up to 99999.99
+            String name = truncate(item.getName(), 16);
+            int qty = item.getQuantity();            // up to 999
+            double price = item.getUnitPrice();      // up to 9999.99
+            double total = item.getTotalPrice();     // up to 999999.99
 
             sb.append(String.format(
-                    LEFT_MARGIN + "| %-14s | %3d | %6.2f | %7.2f |\n",
+                    LEFT_MARGIN + "| %-14s | %2d | %6.2f | %7.2f |\n",
                     name, qty, price, total
             ));
         }
 
-// Footer
+        // Footer
         sb.append(LEFT_MARGIN).append("+----------------+-----+--------+---------+\n");
-
-
         sb.append(String.format(LEFT_MARGIN + "| %-23s %15.2f |\n", "Subtotal:", receipt.getSubtotal()));
-        sb.append(String.format(LEFT_MARGIN + "| %-23s %15.2f |\n", "Discount:", receipt.getDiscount()));
-        sb.append(String.format(LEFT_MARGIN + "| %-23s %15.2f |\n", "Tax:", receipt.getTax()));
+
+        if (receipt.getDiscountRate() > 0) {
+            String rate = receipt.getDiscountType().equalsIgnoreCase("percentage")
+                    ? receipt.getDiscountRate() + "%"
+                    : "৳";
+            sb.append(LEFT_MARGIN).append(formatLineWithRateMiddle("Discount", receipt.getDiscount(), rate));
+        }
+
+        if (receipt.getTax() > 0) {
+            String rate = receipt.getTaxType().equalsIgnoreCase("percentage")
+                    ? receipt.getTaxRate() + "%"
+                    : "৳";
+            sb.append(LEFT_MARGIN).append(formatLineWithRateMiddle("Tax", receipt.getTax(), rate));
+        }
+
+        if (receipt.getVat() > 0) {
+            String rate = receipt.getVatType().equalsIgnoreCase("percentage")
+                    ? receipt.getVatRate() + "%"
+                    : "৳";
+            sb.append(LEFT_MARGIN).append(formatLineWithRateMiddle("VAT", receipt.getVat(), rate));
+        }
+
+
+
 
 // 🔥 Highlighted TOTAL block
-        sb.append(LEFT_MARGIN).append("|=========================================|\n");
+        sb.append(LEFT_MARGIN).append("|================= TOTAL =================|\n");
         sb.append(LEFT_MARGIN).append(formatLine("TOTAL", receipt.getTotal()));
 //        sb.append(LEFT_MARGIN).append("|-----------------------------------------|\n");
 
@@ -83,7 +103,7 @@ public class ReceiptRenderer {
 
 // 💰 Highlighted CHANGE block
 //        sb.append(LEFT_MARGIN).append("|-----------------------------------------|\n");
-        sb.append(LEFT_MARGIN).append(formatLine("CHANGE", receipt.getTotal()));
+        sb.append(LEFT_MARGIN).append(formatLine("CHANGE", receipt.getChange()));
         sb.append(LEFT_MARGIN).append("|=========================================|\n");
 
 
@@ -107,23 +127,45 @@ public class ReceiptRenderer {
         return timeRaw.substring(0, 8);
     }
 
-    private static String alignRight(String value, int width) {
-        return " ".repeat(Math.max(0, width - value.length())) + value;
-    }
+    private static String formatLineWithSymbol(String label, double amount, String symbol) {
+        String line;
+        int totalWidth = 41; // 1 + 39 + 1 for border (|...|)
 
-    private static String formatMoney(double value) {
-        String formatted = String.format("%.2f", value);
-        // You could round/trim if needed: truncate when value is too long
-        if (formatted.length() > 8) {
-            return formatted.substring(0, 7) + "…"; // e.g., "100000…"
+        // Left part: label with symbol
+        String labelWithSymbol = label;
+        if (symbol != null && !symbol.isEmpty()) {
+            labelWithSymbol += " (" + symbol + ")";
         }
-        return formatted;
+
+        // Adjust for amount formatting
+        String amountStr = String.format("%.2f", amount);
+
+        int labelMaxWidth = totalWidth - amountStr.length() - 5; // space and border safety
+        if (labelWithSymbol.length() > labelMaxWidth) {
+            labelWithSymbol = truncate(labelWithSymbol, labelMaxWidth);
+        }
+
+        line = String.format("| %-"+labelMaxWidth+"s %"+(totalWidth-labelMaxWidth-3)+"s |\n", labelWithSymbol, amountStr);
+
+        return line;
     }
 
-    private static String renderTotalLine(String label, double value) {
-        String formattedLabel = String.format("%-26s", label);
-        String formattedValue = alignRight(formatMoney(value), 10);
-        return String.format(LEFT_MARGIN + "| %s | %s |\n", formattedLabel, formattedValue);
+    private static String formatLineWithRateMiddle(String label, double amount, String rateSymbol) {
+        int totalWidth = 40;  // Total width inside the |...............|
+        int amountWidth = 8;
+        int rateWidth = 10;
+        int labelWidth = totalWidth - amountWidth - rateWidth - 3; // 3 for 2 spaces and border
+
+        String amountStr = String.format("%.2f", amount);
+        String rateStr = rateSymbol != null && !rateSymbol.isEmpty() ? "(" + rateSymbol + ")" : "";
+
+        // Truncate label if too long
+        label = truncate(label, labelWidth);
+
+        return String.format(
+                "| %-"+labelWidth+"s %" + rateWidth + "s %" + amountWidth + "s |\n",
+                label, rateStr, amountStr
+        );
     }
 
 
