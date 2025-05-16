@@ -5,11 +5,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import src.core.*;
 import src.model.Item;
 import src.model.Receipt;
 import src.service.ReceiptRenderer;
-import src.service.ReceiptTemplateLoader;
 import src.service.ReceiptPrinterService;
 
 import javax.print.*;
@@ -220,6 +218,7 @@ public class Main {
         String content = ReceiptRenderer.render(receipt);
 
         // 4. Print
-        ReceiptPrinterService.print(content);
+//        ReceiptPrinterService.print(content);
+        ReceiptPrinterService.printTo("RONGTA 80mm Series Printer", content);
     }
 }
