@@ -1,8 +1,11 @@
 package src.service;
 
+import static src.util.Logger.log;
+
 public record ParsedArguments(String dataSource, String printerName, String template) {
 
     public boolean hasCustomData() {
+    log("Parsed arguments: " + printerName);
         return dataSource != null && !dataSource.isBlank();
     }
 
@@ -19,4 +22,3 @@ public record ParsedArguments(String dataSource, String printerName, String temp
         return printerName != null ? printerName : "default";
     }
 }
-

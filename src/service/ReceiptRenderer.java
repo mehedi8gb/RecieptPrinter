@@ -39,15 +39,17 @@ public class ReceiptRenderer {
         sb.append(centerText("Tel: " + receipt.getShopPhone())).append("\n");
         sb.append("-".repeat(LINE_WIDTH)).append("\n");
 
-        String date = receipt.getDate();
-        String timeRaw = receipt.getTime();
-        String timeFormatted = formatTimeHMS(timeRaw);
+        String date = receipt.getDate();  // Or format it here
+        String timeFormatted = receipt.getTime(); // Should be already formatted
+        String invoiceId = receipt.getInvoiceId();
+        String cashier = receipt.getCashierName();
+        String customer = receipt.getCustomerName();
 
-        sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Invoice:", receipt.getInvoiceId()));
-        sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Date:", date));
-        sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Time:", timeFormatted));
-        sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Cashier:", receipt.getCashierName()));
-        sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Customer:", receipt.getCustomerName()));
+        sb.append(String.format("%s%-"+LABEL_WIDTH+"s%s\n", LEFT_MARGIN, "Invoice:", invoiceId));
+        sb.append(String.format("%s%-"+LABEL_WIDTH+"s%s\n", LEFT_MARGIN, "Date:", date));
+        sb.append(String.format("%s%-"+LABEL_WIDTH+"s%s\n", LEFT_MARGIN, "Time:", timeFormatted));
+        sb.append(String.format("%s%-"+LABEL_WIDTH+"s%s\n", LEFT_MARGIN, "Cashier:", cashier));
+        sb.append(String.format("%s%-"+LABEL_WIDTH+"s%s\n", LEFT_MARGIN, "Customer:", customer));
 
 
         // Header
