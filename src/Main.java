@@ -211,7 +211,7 @@ public class Main {
         receipt.setPaid(10000.00);
         receipt.setChange(1500.00);
         receipt.setItems(List.of(
-                new Item(10000.00, 2, "Barrett Small")
+                new Item(10.00, 2, "Barrett Small Test")
         ));
 
         // 3. Render receipt
