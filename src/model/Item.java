@@ -1,21 +1,19 @@
 package src.model;
+import static src.util.AppUtils.*;
 
 public class Item {
     private static final int MAX_ITEM_NAME_LENGTH = 16;  // based on layout
     private String name;
     private int quantity;
 
+    // No-args constructor for Jackson
+    public Item() {
+    }
+
     public Item(double unitPrice, int quantity, String name) {
         this.unitPrice = unitPrice;
         this.quantity = quantity;
-        this.name = formatItemName(name);
-    }
-
-    private String formatItemName(String name) {
-        if (name.length() > MAX_ITEM_NAME_LENGTH) {
-            return name.substring(0, MAX_ITEM_NAME_LENGTH - 3) + ".";
-        }
-        return name;
+        this.name = formatItemName(name, MAX_ITEM_NAME_LENGTH);
     }
 
 
@@ -36,7 +34,7 @@ public class Item {
     }
 
     public String getName() {
-        return name;
+        return formatItemName(name, MAX_ITEM_NAME_LENGTH);
     }
 
     public void setName(String name) {

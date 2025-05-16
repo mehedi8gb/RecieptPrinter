@@ -2,12 +2,14 @@ package src.service;
 
 import src.model.Item;
 import src.model.Receipt;
+import static src.util.AppUtils.*;
 
 public class ReceiptRenderer {
     private static final int LINE_WIDTH = 48;
-    private static final String LEFT_MARGIN = "   "; // 2 spaces margin to center the 43-char block
+    private static final String LEFT_MARGIN = "  "; // 2 spaces margin to center the 43-char block
     public static final int LABEL_WIDTH = 22;
     public static final int PRICE_WIDTH = 10;
+    private static final int ITEM_NAME_WIDTH = 14;   // 16 total with spaces
 
     private static String truncate(String value, int length) {
         if (value.length() <= length) return value;
@@ -28,7 +30,7 @@ public class ReceiptRenderer {
     }
 
 
-    public static String render(Receipt receipt) {
+    public static String render(Receipt receipt, String template) {
         StringBuilder sb = new StringBuilder();
 
         // Header - centered
@@ -47,26 +49,27 @@ public class ReceiptRenderer {
         sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Cashier:", receipt.getCashierName()));
 
 
-// Header
-        sb.append(LEFT_MARGIN).append("+----------------+-----+--------+---------+\n");
-        sb.append(LEFT_MARGIN).append("| Item           | Qty | Price |   Total  |\n");
-        sb.append(LEFT_MARGIN).append("+----------------+-----+--------+---------+\n");
+        // Header
+        sb.append(LEFT_MARGIN).append("+----------------+-----+--------+----------+\n");
+        sb.append(LEFT_MARGIN).append("| Item           | Qty | Price  |  Total   |\n");
+        sb.append(LEFT_MARGIN).append("+----------------+-----+--------+----------+\n");
 
-// Rows
+        // Rows
         for (Item item : receipt.getItems()) {
-            String name = truncate(item.getName(), 16);
-            int qty = item.getQuantity();            // up to 999
-            double price = item.getUnitPrice();      // up to 9999.99
-            double total = item.getTotalPrice();     // up to 999999.99
+            String name = truncate(item.getName(), ITEM_NAME_WIDTH);
+            int qty = Math.min(item.getQuantity(), 999); // limit quantity display
+            double price = Math.min(item.getUnitPrice(), 9999.99); // cap to fit
+            double total = Math.min(item.getTotalPrice(), 999999.99); // cap to fit
 
+            // Safe formatted row
             sb.append(String.format(
-                    LEFT_MARGIN + "| %-14s | %2d | %6.2f | %7.2f |\n",
+                    LEFT_MARGIN + "| %-14s | %3d | %6.2f | %7.2f |\n",
                     name, qty, price, total
             ));
         }
 
         // Footer
-        sb.append(LEFT_MARGIN).append("+----------------+-----+--------+---------+\n");
+        sb.append(LEFT_MARGIN).append("+----------------+-----+--------+----------+\n");
         sb.append(String.format(LEFT_MARGIN + "| %-23s %15.2f |\n", "Subtotal:", receipt.getSubtotal()));
 
         if (receipt.getDiscountRate() > 0) {
@@ -94,7 +97,7 @@ public class ReceiptRenderer {
 
 
 // 🔥 Highlighted TOTAL block
-        sb.append(LEFT_MARGIN).append("|================= TOTAL =================|\n");
+        sb.append(LEFT_MARGIN).append("|================= TOTAL ==================|\n");
         sb.append(LEFT_MARGIN).append(formatLine("TOTAL", receipt.getTotal()));
 //        sb.append(LEFT_MARGIN).append("|-----------------------------------------|\n");
 
@@ -104,7 +107,7 @@ public class ReceiptRenderer {
 // 💰 Highlighted CHANGE block
 //        sb.append(LEFT_MARGIN).append("|-----------------------------------------|\n");
         sb.append(LEFT_MARGIN).append(formatLine("CHANGE", receipt.getChange()));
-        sb.append(LEFT_MARGIN).append("|=========================================|\n");
+        sb.append(LEFT_MARGIN).append("|==========================================|\n");
 
 
 
@@ -167,6 +170,4 @@ public class ReceiptRenderer {
                 label, rateStr, amountStr
         );
     }
-
-
 }

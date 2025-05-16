@@ -1,6 +1,9 @@
 package src.model;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import static java.lang.Math.round;
 
@@ -26,9 +29,16 @@ public class Receipt {
     private String discountType = "fixed"; // or "fixed"
     private String taxType = "fixed";      // or "fixed"
     private String vatType = "fixed";      // or "fixed"
-
-
     private List<Item> items;
+
+    // No-args constructor for Jackson
+    public Receipt() {
+        this.date = LocalDate.now().toString();  // e.g., "2025-05-16"
+
+        // Format time as HH:mm:ss (hours:minutes:seconds)
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        this.time = LocalTime.now().format(timeFormatter);  // e.g., "14:35:20"
+    }
 
     public String getShopName() {
         return shopName;
