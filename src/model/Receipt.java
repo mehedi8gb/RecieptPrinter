@@ -13,6 +13,7 @@ public class Receipt {
     private String shopPhone;
     private String invoiceId;
     private String cashierName;
+    private String customerName;
     private String date;
     private String time;
     private double subtotal;
@@ -78,6 +79,14 @@ public class Receipt {
 
     public void setCashierName(String cashierName) {
         this.cashierName = cashierName;
+    }
+
+    public String getCustomerName() {
+        return customerName == null ? "Guest" : customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public String getDate() {

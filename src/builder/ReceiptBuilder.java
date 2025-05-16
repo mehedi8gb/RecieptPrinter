@@ -15,6 +15,7 @@ public class ReceiptBuilder {
         receipt.setShopPhone("+880123456789");
         receipt.setInvoiceId("20250514-0001");
         receipt.setCashierName("Rafi");
+        receipt.setCustomerName("John Doe");
         receipt.setDate(LocalDate.now().toString());
         receipt.setTime(LocalTime.now().toString());
 //        receipt.setSubtotal(10000.00);

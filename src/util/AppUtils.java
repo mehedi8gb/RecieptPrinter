@@ -8,7 +8,7 @@ public final class AppUtils {
 
     public static String formatItemName(String name, int maxLength) {
         if (name.length() > maxLength) {
-            return name.substring(0, maxLength - 3) + "…";
+            return name.substring(0, maxLength - 3) + ".";
         }
         return name;
     }

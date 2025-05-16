@@ -47,6 +47,7 @@ public class ReceiptRenderer {
         sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Date:", date));
         sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Time:", timeFormatted));
         sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Cashier:", receipt.getCashierName()));
+        sb.append(String.format("%s%-7s%s\n", LEFT_MARGIN, "Customer:", receipt.getCustomerName()));
 
 
         // Header
