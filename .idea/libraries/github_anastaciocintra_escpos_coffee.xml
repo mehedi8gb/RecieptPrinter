@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="github.anastaciocintra.escpos.coffee" type="repository">
+    <properties maven-id="com.github.anastaciocintra:escpos-coffee:4.1.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/escpos-coffee-4.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
