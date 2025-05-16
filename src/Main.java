@@ -207,7 +207,7 @@ public class Main {
         receipt.setSubtotal(10000.00);
         receipt.setDiscount(400.00);
         receipt.setTax(500.00);
-        receipt.setTotal(10000.00);
+        receipt.setTotal(100.00);
         receipt.setPaid(10000.00);
         receipt.setChange(1500.00);
         receipt.setItems(List.of(
@@ -218,7 +218,7 @@ public class Main {
         String content = ReceiptRenderer.render(receipt);
 
         // 4. Print
-//        ReceiptPrinterService.print(content);
-        ReceiptPrinterService.printTo("RONGTA 80mm Series Printer", content);
+        System.out.println(content);
+//        ReceiptPrinterService.printTo("RONGTA 80mm Series Printer", content);
     }
 }

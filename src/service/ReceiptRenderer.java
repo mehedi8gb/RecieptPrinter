@@ -6,6 +6,8 @@ import src.model.Receipt;
 public class ReceiptRenderer {
     private static final int LINE_WIDTH = 48;
     private static final String LEFT_MARGIN = "   "; // 2 spaces margin to center the 43-char block
+    public static final int LABEL_WIDTH = 22;
+    public static final int PRICE_WIDTH = 10;
 
     private static String truncate(String value, int length) {
         if (value.length() <= length) return value;
@@ -16,6 +18,13 @@ public class ReceiptRenderer {
         int padding = (LINE_WIDTH - text.length()) / 2;
         if (padding < 0) padding = 0;
         return " ".repeat(padding) + text;
+    }
+
+    private static String formatLine(String label, double amount) {
+        String safeLabel = label.length() > LABEL_WIDTH
+                ? label.substring(0, LABEL_WIDTH)
+                : label;
+        return String.format("| %-22s >>> %12.2f |\n", safeLabel, amount);
     }
 
 
@@ -70,16 +79,16 @@ public class ReceiptRenderer {
         sb.append(String.format(LEFT_MARGIN + "| %-23s %15.2f |\n", "Tax:", receipt.getTax()));
 
 // 🔥 Highlighted TOTAL block
-        sb.append(LEFT_MARGIN).append("|-----------------------------------------|\n");
-        sb.append(String.format(LEFT_MARGIN + "| 🧾 %-22s >>> %12.2f |\n", "TOTAL", receipt.getTotal()));
+        sb.append(LEFT_MARGIN).append("|=========================================|\n");
+        sb.append(LEFT_MARGIN).append(formatLine("TOTAL", receipt.getTotal()));
         sb.append(LEFT_MARGIN).append("|-----------------------------------------|\n");
 
 // PAID as normal
         sb.append(String.format(LEFT_MARGIN + "| %-23s %15.2f |\n", "Paid:", receipt.getPaid()));
 
 // 💰 Highlighted CHANGE block
-        sb.append(LEFT_MARGIN).append("|=========================================|\n");
-        sb.append(String.format(LEFT_MARGIN + "| 💵 %-22s >>  %12.2f |\n", "CHANGE", receipt.getChange()));
+        sb.append(LEFT_MARGIN).append("|-----------------------------------------|\n");
+        sb.append(LEFT_MARGIN).append(formatLine("CHANGE", receipt.getTotal()));
         sb.append(LEFT_MARGIN).append("|=========================================|\n");
 
 
