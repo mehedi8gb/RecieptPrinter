@@ -174,6 +174,10 @@ public class Receipt {
         this.discountType = discountType;
     }
 
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
     public String getTaxType() {
         return taxType;
     }
@@ -194,6 +198,10 @@ public class Receipt {
         return vat;
     }
 
+    public void setVat(double vat) {
+        this.vat = vat;
+    }
+
 
     public void setPaid(double paid) {
         this.paid = paid;
@@ -203,52 +211,5 @@ public class Receipt {
             this.change = 0;
         }
     }
-
-    public void calculateTotal() {
-        double subtotal = 0;
-
-        for (Item item : items) {
-            subtotal += item.getTotalPrice();
-        }
-
-        this.subtotal = round(subtotal);
-
-        // Apply coupon
-        double afterCoupon = subtotal - coupon;
-
-        // Apply discount
-        double discountAmount = discountType.equals("percentage")
-                ? afterCoupon * (this.discountRate / 100.0)
-                : this.discountRate;
-        discountAmount = Math.min(discountAmount, afterCoupon);
-        double afterDiscount = afterCoupon - discountAmount;
-
-        // Apply tax
-        double taxAmount = taxType.equals("percentage")
-                ? afterDiscount * (taxRate / 100.0)
-                : taxRate;
-
-        // Apply VAT
-        double vatAmount = vatType.equals("percentage")
-                ? afterDiscount * (vatRate / 100.0)
-                : vatRate;
-
-        // Final total
-        this.tax = round(taxAmount);
-        this.vat = round(vatAmount);
-        this.discount = round(discountAmount);
-        this.total = round(afterDiscount + tax + vat);
-
-        // Optional: recalculate change if paid is already set
-        if (paid > 0) {
-            this.change = round(paid - total);
-        }
-    }
-
-
-    private double round(double value) {
-        return Math.round(value * 100.0) / 100.0;
-    }
-
 }
 
