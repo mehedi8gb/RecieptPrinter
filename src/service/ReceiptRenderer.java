@@ -5,7 +5,7 @@ import src.model.Receipt;
 import static src.util.AppUtils.*;
 
 public class ReceiptRenderer {
-    private static final int LINE_WIDTH = 48;
+    private static final int LINE_WIDTH = 50;
     private static final String LEFT_MARGIN = "  "; // 2 spaces margin to center the 43-char block
     public static final int LABEL_WIDTH = 22;
     public static final int PRICE_WIDTH = 10;
@@ -26,7 +26,7 @@ public class ReceiptRenderer {
         String safeLabel = label.length() > LABEL_WIDTH
                 ? label.substring(0, LABEL_WIDTH)
                 : label;
-        return String.format("| %-22s >>> %12.2f |\n", safeLabel, amount);
+        return String.format("| %-24s >>> %12.2f |\n", safeLabel, amount);
     }
 
 
@@ -50,27 +50,29 @@ public class ReceiptRenderer {
 
 
         // Header
-        sb.append(LEFT_MARGIN).append("+----------------+-----+--------+----------+\n");
-        sb.append(LEFT_MARGIN).append("| Item           | Qty | Price  |  Total   |\n");
-        sb.append(LEFT_MARGIN).append("+----------------+-----+--------+----------+\n");
+        sb.append(LEFT_MARGIN).append("+-----------------+-----+--------+----------+\n");
+        sb.append(LEFT_MARGIN).append("| Item            | Qty | Price  |  Total   |\n");
+        sb.append(LEFT_MARGIN).append("+-----------------+-----+--------+----------+\n");
 
         // Rows
         for (Item item : receipt.getItems()) {
-            String name = truncate(item.getName(), ITEM_NAME_WIDTH);
+            String name = item.getName();
             int qty = Math.min(item.getQuantity(), 999); // limit quantity display
             double price = Math.min(item.getUnitPrice(), 9999.99); // cap to fit
             double total = Math.min(item.getTotalPrice(), 999999.99); // cap to fit
 
             // Safe formatted row
             sb.append(String.format(
-                    LEFT_MARGIN + "| %-14s | %3d | %6.2f | %7.2f |\n",
+                    LEFT_MARGIN + "| %-15s | %3d | %6.2f | %7.2f |\n",
                     name, qty, price, total
             ));
         }
 
         // Footer
-        sb.append(LEFT_MARGIN).append("+----------------+-----+--------+----------+\n");
-        sb.append(String.format(LEFT_MARGIN + "| %-23s %15.2f |\n", "Subtotal:", receipt.getSubtotal()));
+        sb.append(LEFT_MARGIN).append("+-----------------+-----+--------+----------+\n");
+
+
+        sb.append(String.format(LEFT_MARGIN + "| %-23s %17.2f |\n", "Subtotal:", receipt.getSubtotal()));
 
         if (receipt.getDiscountRate() > 0) {
             String rate = receipt.getDiscountType().equalsIgnoreCase("percentage")
@@ -97,17 +99,17 @@ public class ReceiptRenderer {
 
 
 // 🔥 Highlighted TOTAL block
-        sb.append(LEFT_MARGIN).append("|================= TOTAL ==================|\n");
+        sb.append(LEFT_MARGIN).append("|================== TOTAL ==================|\n");
         sb.append(LEFT_MARGIN).append(formatLine("TOTAL", receipt.getTotal()));
 //        sb.append(LEFT_MARGIN).append("|-----------------------------------------|\n");
 
 // PAID as normal
-        sb.append(String.format(LEFT_MARGIN + "| %-23s %15.2f |\n", "Paid:", receipt.getPaid()));
+        sb.append(String.format(LEFT_MARGIN + "| %-23s %17.2f |\n", "Paid:", receipt.getPaid()));
 
 // 💰 Highlighted CHANGE block
 //        sb.append(LEFT_MARGIN).append("|-----------------------------------------|\n");
         sb.append(LEFT_MARGIN).append(formatLine("CHANGE", receipt.getChange()));
-        sb.append(LEFT_MARGIN).append("|==========================================|\n");
+        sb.append(LEFT_MARGIN).append("|===========================================|\n");
 
 
 
@@ -154,7 +156,7 @@ public class ReceiptRenderer {
     }
 
     private static String formatLineWithRateMiddle(String label, double amount, String rateSymbol) {
-        int totalWidth = 40;  // Total width inside the |...............|
+        int totalWidth = 42;  // Total width inside the |...............|
         int amountWidth = 8;
         int rateWidth = 10;
         int labelWidth = totalWidth - amountWidth - rateWidth - 3; // 3 for 2 spaces and border
@@ -166,7 +168,7 @@ public class ReceiptRenderer {
         label = truncate(label, labelWidth);
 
         return String.format(
-                "| %-"+labelWidth+"s %" + rateWidth + "s %" + amountWidth + "s |\n",
+                "| %-"+labelWidth+"s %-" + rateWidth + "s %-" + amountWidth + "s |\n",
                 label, rateStr, amountStr
         );
     }

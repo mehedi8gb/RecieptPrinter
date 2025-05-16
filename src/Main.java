@@ -22,7 +22,7 @@ public class Main {
         // 5. Output to console or printer
         System.out.println(content);
         if (parsed.shouldPrint()) {
-            ReceiptPrinterService.printTo(parsed.getPrinterName(), content);
+//            ReceiptPrinterService.printTo(parsed.getPrinterName(), content);
         }
     }
 }

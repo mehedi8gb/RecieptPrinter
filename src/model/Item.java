@@ -2,7 +2,7 @@ package src.model;
 import static src.util.AppUtils.*;
 
 public class Item {
-    private static final int MAX_ITEM_NAME_LENGTH = 16;  // based on layout
+    private static final int MAX_ITEM_NAME_LENGTH = 17;  // based on layout
     private String name;
     private int quantity;
 
