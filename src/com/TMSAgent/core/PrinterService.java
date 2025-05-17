@@ -1,4 +1,4 @@
-package src.core;
+package src.com.TMSAgent.core;
 
 public class PrinterService {
 }

@@ -1,4 +1,4 @@
-package src.service;
+package src.com.TMSAgent.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+
+import static src.com.TMSAgent.util.Logger.log;
 
 public class JsonArgument {
 
@@ -17,13 +19,14 @@ public class JsonArgument {
     public static String cleanCLIJson(String rawInput) {
         try {
 
-            String prefix = "printtoreceiptprinter:";
+            String prefix = "tmsagent:";
             if (rawInput.startsWith(prefix)) {
                 rawInput = rawInput.substring(prefix.length());
             }
 
             // STEP 2: URL-decode
             String urlDecoded = URLDecoder.decode(rawInput, StandardCharsets.UTF_8);
+            log("\ndecoded\n" + urlDecoded);
 
             // STEP 3: Unwrap double quotes if the string is wrapped (PowerShell/CMD)
             if ((urlDecoded.startsWith("\"") && urlDecoded.endsWith("\"")) ||

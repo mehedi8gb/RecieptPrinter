@@ -1,6 +1,6 @@
-package src.core;
+package src.com.TMSAgent.core;
 
-import src.model.Receipt;
+import src.com.TMSAgent.model.Receipt;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

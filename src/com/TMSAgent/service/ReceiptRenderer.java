@@ -1,9 +1,7 @@
-package src.service;
+package src.com.TMSAgent.service;
 
-import src.model.Item;
-import src.model.Receipt;
-
-import static src.util.AppUtils.*;
+import src.com.TMSAgent.model.Item;
+import src.com.TMSAgent.model.Receipt;
 
 public class ReceiptRenderer {
     private static final int LINE_WIDTH = 48;

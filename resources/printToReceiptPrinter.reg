@@ -1,12 +1,12 @@
 Windows Registry Editor Version 5.00
 
-[HKEY_CLASSES_ROOT\printToReceiptPrinter]
+[HKEY_CLASSES_ROOT\TMSAgent]
 @="URL:Print to Receipt Printer Protocol"
 "URL Protocol"=""
 
-[HKEY_CLASSES_ROOT\printToReceiptPrinter\shell]
+[HKEY_CLASSES_ROOT\TMSAgent\shell]
 
-[HKEY_CLASSES_ROOT\printToReceiptPrinter\shell\open]
+[HKEY_CLASSES_ROOT\TMSAgent\shell\open]
 
-[HKEY_CLASSES_ROOT\printToReceiptPrinter\shell\open\command]
-@="\"C:\\Program Files\\Java\\jdk-17\\bin\\java.exe\" -jar \"D:\\projects\\java\\RecieptPrinter\\out\\artifacts\\RecieptPrinter_jar\\RecieptPrinter.jar\" \"%1\""
+[HKEY_CLASSES_ROOT\TMSAgent\shell\open\command]
+@="\"C:\\Program Files\\Java\\jdk-17\\bin\\java.exe\" -jar \"D:\\projects\\java\\RecieptPrinter\\out\\artifacts\\build\\RecieptPrinter.jar\" \"%1\""

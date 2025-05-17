@@ -1,13 +1,14 @@
-package src;
+package src.com.TMSAgent;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import src.model.Receipt;
-import src.service.*;
-import static src.util.Logger.*;
+import src.com.TMSAgent.model.Receipt;
+import src.com.TMSAgent.service.*;
+import static src.com.TMSAgent.util.Logger.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         log("\n\nStarting receipt printing job...");
+        log("\nargs[0] = \n" + args[0]);
         // 1. Parse CLI arguments
 //        log("\n Unescaped JSON : " + args[0]);
         String raw = JsonArgument.cleanCLIJson(args[0]);

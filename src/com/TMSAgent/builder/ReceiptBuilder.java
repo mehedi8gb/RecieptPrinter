@@ -1,7 +1,7 @@
-package src.builder;
+package src.com.TMSAgent.builder;
 
-import src.model.Item;
-import src.model.Receipt;
+import src.com.TMSAgent.model.Item;
+import src.com.TMSAgent.model.Receipt;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

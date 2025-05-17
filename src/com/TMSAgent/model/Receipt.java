@@ -1,4 +1,4 @@
-package src.model;
+package src.com.TMSAgent.model;
 
 import java.util.List;
 import java.time.LocalDate;

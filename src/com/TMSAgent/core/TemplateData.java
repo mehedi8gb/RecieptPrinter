@@ -1,4 +1,4 @@
-package src.core;
+package src.com.TMSAgent.core;
 
 import java.util.HashMap;
 import java.util.Map;

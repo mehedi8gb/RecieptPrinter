@@ -1,7 +1,7 @@
-package src.service;
+package src.com.TMSAgent.service;
 
-import src.model.Item;
-import src.model.Receipt;
+import src.com.TMSAgent.model.Item;
+import src.com.TMSAgent.model.Receipt;
 
 public class ReceiptCalculatorService {
 

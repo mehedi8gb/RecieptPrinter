@@ -1,5 +1,5 @@
-package src.model;
-import static src.util.AppUtils.*;
+package src.com.TMSAgent.model;
+import static src.com.TMSAgent.util.AppUtils.*;
 
 public class Item {
     private static final int MAX_ITEM_NAME_LENGTH = 17;  // based on layout

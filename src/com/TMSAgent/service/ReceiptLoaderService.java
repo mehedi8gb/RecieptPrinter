@@ -1,12 +1,12 @@
-package src.service;
+package src.com.TMSAgent.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import src.model.Receipt;
+import src.com.TMSAgent.model.Receipt;
 
 import java.io.IOException;
 
-import static src.util.Logger.log;
+import static src.com.TMSAgent.util.Logger.log;
 
 public class ReceiptLoaderService {
 

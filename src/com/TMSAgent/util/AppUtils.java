@@ -1,4 +1,4 @@
-package src.util;
+package src.com.TMSAgent.util;
 
 public final class AppUtils {
 

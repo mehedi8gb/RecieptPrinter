@@ -1,11 +1,11 @@
-package src.core;
+package src.com.TMSAgent.core;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import src.service.ReceiptPrinterService;
+import src.com.TMSAgent.service.ReceiptPrinterService;
 
 import javax.print.*;
 import java.io.ByteArrayOutputStream;
