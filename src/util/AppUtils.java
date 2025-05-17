@@ -26,5 +26,18 @@ public final class AppUtils {
         return "*".repeat(input.length() - visibleChars) + input.substring(input.length() - visibleChars);
     }
 
-    // Add more global utils here...
+
+public static String padLeft(String text, int length) {
+    return " ".repeat(Math.max(0, length - text.length())) + text;
+}
+
+public static String padRight(String text, int length) {
+    return text + " ".repeat(Math.max(0, length - text.length()));
+}
+
+public static String trimToLength(String text, int maxLength) {
+    return text.length() > maxLength ? text.substring(0, maxLength) : text;
+}
+
+
 }
