@@ -26,10 +26,10 @@ public class Main {
         // 3. Calculate receipt totals
         ReceiptCalculatorService.calculate(receipt);
 
-        receipt.setDiscount(1000);
-        receipt.setDiscountType("fixed");
-        receipt.setTax(5);
-        receipt.setVat(5);
+//        receipt.setDiscount(1000);
+//        receipt.setDiscountType("fixed");
+//        receipt.setTax(5);
+//        receipt.setVat(5);
 
         // 4. Render content using selected template
         String content = ReceiptRenderer.render(receipt, parsed.get("template").asText());
@@ -37,7 +37,7 @@ public class Main {
         // 5. Output to console or printer
         log("\n\nPrinting to " + parsed.get("printerName").asText());
         log("\n\nContent: \n\n" + content);
-//        ReceiptPrinterService.printTo(parsed.get("printerName").asText(), content);
+        ReceiptPrinterService.printTo(parsed.get("printerName").asText(), content);
 
         log("\n\nReceipt printed successfully.");
     }
