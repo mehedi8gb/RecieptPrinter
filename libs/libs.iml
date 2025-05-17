@@ -5,6 +5,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="fasterxml.jackson.core.databind" level="project" />
     <orderEntry type="library" exported="" name="github.anastaciocintra.escpos.coffee" level="project" />
-    <orderEntry type="library" name="jackson-annotations-2.19.0" level="application" />
+    <orderEntry type="library" exported="" name="jackson-annotations-2.19.0" level="application" />
   </component>
 </module>
