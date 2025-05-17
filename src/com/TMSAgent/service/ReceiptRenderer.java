@@ -75,26 +75,30 @@ sb.append(LEFT_MARGIN).append("+-----------------+-----+---------+-----------+\n
 
         sb.append(String.format(LEFT_MARGIN + "| %-23s %19.2f |\n", "Subtotal:", receipt.getSubtotal()));
 
-        if (receipt.getDiscountRate() > 0) {
-            String rate = receipt.getDiscountType().equalsIgnoreCase("percentage")
-                    ? receipt.getDiscountRate() + "%"
-                    : "fixed";
-            sb.append(LEFT_MARGIN).append(formatLineWithRateMiddle("Discount", receipt.getDiscount(), rate));
-        }
+if (receipt.getDiscountRate() > 0) {
+    boolean isPercent = receipt.getDiscountType().equalsIgnoreCase("percentage");
+    String rateValue = isPercent
+        ? String.valueOf(receipt.getDiscountRate())
+        : "fixed";
+    sb.append(LEFT_MARGIN).append(formatLineWithRateMiddle("Discount", receipt.getDiscount(), rateValue, isPercent));
+}
 
-        if (receipt.getTax() > 0) {
-            String rate = receipt.getTaxType().equalsIgnoreCase("percentage")
-                    ? receipt.getTaxRate() + "%"
-                    : "fixed";
-            sb.append(LEFT_MARGIN).append(formatLineWithRateMiddle("Tax", receipt.getTax(), rate));
-        }
+if (receipt.getTax() > 0) {
+    boolean isPercent = receipt.getTaxType().equalsIgnoreCase("percentage");
+    String rateValue = isPercent
+        ? String.valueOf(receipt.getTaxRate())
+        : "fixed";
+    sb.append(LEFT_MARGIN).append(formatLineWithRateMiddle("Tax", receipt.getTax(), rateValue, isPercent));
+}
 
-        if (receipt.getVat() > 0) {
-            String rate = receipt.getVatType().equalsIgnoreCase("percentage")
-                    ? receipt.getVatRate() + "%"
-                    : "fixed";
-            sb.append(LEFT_MARGIN).append(formatLineWithRateMiddle("VAT", receipt.getVat(), rate));
-        }
+if (receipt.getVat() > 0) {
+    boolean isPercent = receipt.getVatType().equalsIgnoreCase("percentage");
+    String rateValue = isPercent
+        ? String.valueOf(receipt.getVatRate())
+        : "fixed";
+    sb.append(LEFT_MARGIN).append(formatLineWithRateMiddle("VAT", receipt.getVat(), rateValue, isPercent));
+}
+
 
 
 
@@ -125,21 +129,31 @@ sb.append(LEFT_MARGIN).append("+-----------------+-----+---------+-----------+\n
         return sb.toString();
     }
 
-    private static String formatLineWithRateMiddle(String label, double amount, String rateSymbol) {
-        int totalWidth = 44;  // Total width inside the |...............|
-        int amountWidth = 8;
-        int rateWidth = 10;
-        int labelWidth = totalWidth - amountWidth - rateWidth - 3; // 3 for 2 spaces and border
+private static String formatLineWithRateMiddle(String label, double amount, String rateValue, boolean isRatePercent) {
+    int totalWidth = 44;  // total width inside borders
+    int amountWidth = 10; // enough space for amount including decimal places
+    int rateWidth = 9;    // enough for e.g. (fixed) or (2.5%)
+    int labelWidth = totalWidth - amountWidth - rateWidth - 3; // 3 spaces for padding between sections
 
-        String amountStr = String.format("%.2f", amount);
-        String rateStr = rateSymbol != null && !rateSymbol.isEmpty() ? "(" + rateSymbol + ")" : "";
+    // Format amount right aligned with 2 decimals
+    String amountStr = String.format("%" + amountWidth + ".2f", amount);
 
-        // Truncate label if too long
-        label = truncate(label, labelWidth);
-
-        return String.format(
-                "| %-"+labelWidth+"s %-" + rateWidth + "s %-" + amountWidth + "s |\n",
-                label, rateStr, amountStr
-        );
+    // Format rate string with percent or fixed
+    String rateStr;
+    if (rateValue == null || rateValue.isEmpty()) {
+        rateStr = String.format("%" + rateWidth + "s", ""); // empty if no rate
+    } else if (isRatePercent) {
+        rateStr = String.format("%" + rateWidth + "s", "(" + rateValue + "%)"); // right align e.g. (2.5%)
+    } else {
+        rateStr = String.format("%" + rateWidth + "s", "(" + rateValue + ")"); // e.g. (fixed)
     }
+
+    // Truncate label if needed
+    label = label.length() > labelWidth ? label.substring(0, labelWidth - 3) + "..." : label;
+
+    // Compose the line with padding:
+    // | [label left aligned] [rate right aligned] [amount right aligned] |
+    return String.format("| %-"+labelWidth+"s %s %s |\n", label, rateStr, amountStr);
+}
+
 }
