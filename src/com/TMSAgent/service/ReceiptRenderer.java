@@ -5,7 +5,7 @@ import src.com.TMSAgent.model.Receipt;
 
 public class ReceiptRenderer {
     private static final int LINE_WIDTH = 48;
-    private static final String LEFT_MARGIN = " "; // 2 spaces margin to center the 43-char block
+    private static final String LEFT_MARGIN = ""; // 2 spaces margin to center the 43-char block
     public static final int LABEL_WIDTH = 22;
 
     private static String truncate(String value, int length) {

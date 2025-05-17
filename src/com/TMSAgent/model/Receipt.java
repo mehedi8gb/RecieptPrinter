@@ -35,10 +35,7 @@ public class Receipt {
     // No-args constructor for Jackson
     public Receipt() {
         this.date = LocalDate.now().toString();  // e.g., "2025-05-16"
-
-        // Format time as HH:mm:ss (hours:minutes:seconds)
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        this.time = LocalTime.now().format(timeFormatter);  // e.g., "14:35:20"
+        this.time = LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
     }
 
     public String getShopName() {

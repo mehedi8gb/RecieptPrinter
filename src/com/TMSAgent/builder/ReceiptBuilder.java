@@ -5,6 +5,7 @@ import src.com.TMSAgent.model.Receipt;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ReceiptBuilder {
@@ -17,7 +18,8 @@ public class ReceiptBuilder {
         receipt.setCashierName("Rafi");
         receipt.setCustomerName("John Doe");
         receipt.setDate(LocalDate.now().toString());
-        receipt.setTime(LocalTime.now().toString());
+        receipt.setTime(LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm a")));
+
 //        receipt.setSubtotal(10000.00);
 //        receipt.setTotal(100.00);
 //        receipt.setChange(1500.00);
