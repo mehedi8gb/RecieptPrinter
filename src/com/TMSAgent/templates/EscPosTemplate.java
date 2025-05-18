@@ -6,6 +6,7 @@ import com.github.anastaciocintra.escpos.Style;
 
 import src.com.TMSAgent.model.Item;
 import src.com.TMSAgent.model.Receipt;
+import src.com.TMSAgent.util.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -88,7 +89,7 @@ public class EscPosTemplate implements IReceiptTemplate {
             escpos.close();
             return byteStream.toString(StandardCharsets.UTF_8);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.logException("Error rendering receipt in EscPosTemplate", e);
             return "ERROR GENERATING RECEIPT";
         }
     }

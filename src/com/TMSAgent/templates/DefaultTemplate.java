@@ -8,11 +8,6 @@ public class DefaultTemplate implements IReceiptTemplate {
     private static final String LEFT_MARGIN = ""; // 2 spaces margin to center the 43-char block
     public static final int LABEL_WIDTH = 22;
 
-    private static String truncate(String value, int length) {
-        if (value.length() <= length) return value;
-        return value.substring(0, length - 1) + "…";
-    }
-
     public static String centerText(String text) {
         int padding = (LINE_WIDTH - text.length()) / 2;
         if (padding < 0) padding = 0;
@@ -150,5 +145,4 @@ public class DefaultTemplate implements IReceiptTemplate {
         // | [label left aligned] [rate right aligned] [amount right aligned] |
         return String.format("| %-" + labelWidth + "s %s %s |\n", label, rateStr, amountStr);
     }
-
 }
