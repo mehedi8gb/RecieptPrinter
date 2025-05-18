@@ -48,10 +48,11 @@ public class JsonArgument {
      */
     public static JsonNode parse(String rawInput) {
         try {
-             String json = cleanCLIJson(rawInput);
+            log("\nRaw input JSON: \n" + rawInput);
+            String json = cleanCLIJson(rawInput);
             return mapper.readTree(json);
         } catch (IOException e) {
-            System.err.println("❌ Failed to parse JSON: " + e.getMessage());
+            log("\nError: Failed to parse input JSON.\n" + e.getMessage());
             return null;
         }
     }

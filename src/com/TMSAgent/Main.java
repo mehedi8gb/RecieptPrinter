@@ -4,6 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import src.com.TMSAgent.model.Receipt;
 import src.com.TMSAgent.service.*;
 
+import javax.print.PrintException;
+import javax.swing.*;
+import java.io.IOException;
+
 import static src.com.TMSAgent.util.Logger.*;
 
 /**
@@ -17,32 +21,24 @@ import static src.com.TMSAgent.util.Logger.*;
  */
 public class Main {
 
-    public static void main(String[] args) {
-        log("\nStarting receipt printing job...\n");
-
+    public static void main(String[] args) throws PrintException, IOException {
         // Step 1: Validate and parse JSON input argument
         if (args.length == 0) {
-            log("\nError: No input JSON provided.\n");
+            log("\nError: No input provided.\n");
+            System.out.println("Usage: java -jar TMSAgent.jar <json_input>");
+            JOptionPane.showMessageDialog(null,
+                    "Error: No input provided.\nUsage: java -jar TMSAgent.jar \"json_input\"",
+                    "Input Error",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        log("\nRaw input JSON: \n" + args[0]);
         JsonNode parsed = JsonArgument.parse(args[0]);
 
-        if (parsed == null) {
-            log("\nError: Failed to parse input JSON.\n");
-            return;
-        }
-
-        log("\nParsed JSON successfully: \n" + parsed.toString());
-
+        assert parsed != null;
         // Step 2: Load Receipt object from parsed input
         Receipt receipt = ReceiptLoaderService.loadFrom(parsed.get("dataSource"));
-        if (receipt == null) {
-            log("\nError: Failed to load receipt data.\n");
-            return;
-        }
-        log("\nReceipt data loaded successfully.\n");
+
+        log("\nReceipt data loaded successfully.\n invoiceId: " + receipt.getInvoiceId());
 
         // Step 3: Optional manual override (can be moved to JSON input)
         /*
@@ -54,7 +50,6 @@ public class Main {
 
         // Step 4: Perform receipt calculations
         ReceiptCalculatorService.calculate(receipt);
-        log("\nReceipt totals calculated.\n");
 
         // Step 5: Render the receipt using specified template
         String content = ReceiptRenderer.render(receipt, parsed.get("template").asText());
@@ -65,7 +60,7 @@ public class Main {
         log("\nRendered Receipt Content:\n" + content);
 
         // Uncomment the line below to enable actual printing
-        // ReceiptPrinterService.printTo(printerName, content);
+        ReceiptPrinterService.printTo(printerName, content);
 
         log("Receipt job completed successfully.");
     }
