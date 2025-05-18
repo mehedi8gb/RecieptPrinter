@@ -17,19 +17,19 @@ public class Receipt {
     private String date;
     private String time;
     private double subtotal;
-    private double tax;
     private double total;
     private double paid;
     private double change;
     private double coupon;
     private double vat;
     private double vatRate; // percentage e.g. 5.0 for 5%
+    private String vatType = "fixed";      // or "fixed"
+    private double tax;
     private double taxRate; // percentage e.g. 2.5 for 2.5%
+    private String taxType = "fixed";      // or "fixed"
     private double discount;
     private double discountRate;
     private String discountType = "fixed"; // or "fixed"
-    private String taxType = "fixed";      // or "fixed"
-    private String vatType = "fixed";      // or "fixed"
     private List<Item> items;
 
     // No-args constructor for Jackson
