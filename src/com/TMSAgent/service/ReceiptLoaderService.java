@@ -10,10 +10,10 @@ import static src.com.TMSAgent.util.Logger.log;
 
 public class ReceiptLoaderService {
 
-    public static Receipt loadFrom(JsonNode json) {
+    public static Receipt loadFrom(JsonNode dataSource) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.treeToValue(json.get("dataSource"), Receipt.class);
+            return mapper.treeToValue(dataSource, Receipt.class);
         } catch (IOException e) {
             log("Error loading receipt data: " + e.getMessage());
             throw new RuntimeException(e);

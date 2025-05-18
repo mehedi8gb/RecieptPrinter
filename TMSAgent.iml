@@ -10,5 +10,6 @@
     <orderEntry type="library" exported="" name="jsoup-1.20.1" level="project" />
     <orderEntry type="library" exported="" name="pdfbox-app-3.0.5" level="project" />
     <orderEntry type="library" exported="" name="fasterxml.jackson.core.databind" level="project" />
+    <orderEntry type="library" name="github.anastaciocintra.escpos.coffee" level="project" />
   </component>
 </module>

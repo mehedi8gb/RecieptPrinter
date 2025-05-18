@@ -16,7 +16,7 @@ public class JsonArgument {
     /**
      * Cleans CLI or web-passed JSON string by decoding and unescaping.
      */
-    public static String cleanCLIJson(String rawInput) {
+    private static String cleanCLIJson(String rawInput) {
         try {
 
             String prefix = "tmsagent:";
@@ -46,8 +46,9 @@ public class JsonArgument {
     /**
      * Parses cleaned JSON into Jackson JsonNode.
      */
-    public static JsonNode parse(String json) {
+    public static JsonNode parse(String rawInput) {
         try {
+             String json = cleanCLIJson(rawInput);
             return mapper.readTree(json);
         } catch (IOException e) {
             System.err.println("❌ Failed to parse JSON: " + e.getMessage());
