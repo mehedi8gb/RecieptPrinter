@@ -9,4 +9,4 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\TMSAgent\shell\open]
 
 [HKEY_CLASSES_ROOT\TMSAgent\shell\open\command]
-@="\"C:\\Program Files\\Java\\jdk-17\\bin\\java.exe\" -jar \"D:\\projects\\java\\RecieptPrinter\\out\\artifacts\\build\\RecieptPrinter.jar\" \"%1\""
+@="\"C:\\Program Files\\Java\\jdk-17\\bin\\javaw.exe\" -jar \"C:\\TMSAgent.jar\" \"%1\""
